@@ -13,8 +13,10 @@ h1 {
 }
 
 textarea {
-    height: 90vh;
-    width: 80%;
+    height: 100px;
+    width: 800px;
+    font-size: 46px;
+    border: 1px solid black;  
 }
 
 .main {
@@ -35,4 +37,10 @@ textarea {
 
 .sidebar h2 {
     margin-top: 5px;
+}
+
+.post-title {
+    font-size: 3.5rem !important;
+    font-weight: 300 !important;
+    line-height: 1.2 !important;
 }

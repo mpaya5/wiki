@@ -15,6 +15,10 @@ class Search(forms.Form):
         'placeholder': 'Search'
         }))
 
+class Post(forms.Form):
+    title = forms.CharField(label = "Title")
+    textarea = forms.CharField(widget=forms.Textarea(), label='')
+
 def index(request):
     entries = util.list_entries()
     searched = []
@@ -70,3 +74,38 @@ def entry(request, title):
         return render(request, "encyclopedia/entry.html", context)
     else:
         return render(request, "encyclopedia/error.html", {"message": "The requested page was not found."})
+
+
+def create(request):
+    # if this is a POST request we need to process the form data
+    if request.method == 'POST':
+        # create a form instance and populate it with data from the request:
+        form = Post(request.POST)
+        # check whether it's valid:
+        if form.is_valid():
+            # process the data in form.cleaned_data as required
+            title = form.cleaned_data["title"]
+            textarea = form.cleaned_data["textarea"]
+            entries = util.list_entries()
+            if title in entries:
+                return render (request, "encyclopedia/error.html", {
+                    "form": Search(),
+                    "message": "Page already exist"
+                })
+            else:
+                util.save_entry(title, textarea)
+                page = util.get_entry(title)
+                page_converted = markdwn.convert(page)
+
+                context = {
+                    'form': Search(),
+                    'page': page_converted,
+                    'title': title
+                }
+
+                return render(request, "encyclopedia/entry.html", context)
+    else:
+        return render(request, "encyclopedia/create.html", {
+            "form": Search(),
+            "post": Post()
+        })
