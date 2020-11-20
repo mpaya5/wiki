@@ -19,6 +19,9 @@ class Post(forms.Form):
     title = forms.CharField(label = "Title")
     textarea = forms.CharField(widget=forms.Textarea(), label='')
 
+class Edit(forms.Form):
+    textarea = forms.CharField(widget=forms.Textarea(), label='')
+
 def index(request):
     entries = util.list_entries()
     searched = []
@@ -109,3 +112,48 @@ def create(request):
             "form": Search(),
             "post": Post()
         })
+
+
+def edit(request, title):
+    if request.method == 'GET':
+        page = util.get_entry(title)
+
+        context = {
+            'form': Search(),
+            'edit': Edit(initial= {'textarea': page}),
+            'title': title
+        }
+
+        return render(request, "encyclopedia/edit.html", context)
+    else:
+        form = Edit(request.POST)
+        if form.is_valid():
+            textarea = form.cleaned_data["textarea"]
+            util.save_entry(title, textarea)
+            page = util.get_entry(title)
+            page_converted = markdwn.convert(page)
+
+            context = {
+                'form': Search(),
+                'page': page_converted,
+                'title': title
+            }
+
+            return render(request, "encyclopedia/edit.html", context)
+
+def randomPage(request):
+    if request.method == 'GET':
+        entries = util.list_entries()
+        num = random.randint(0, len(entries) - 1)
+        page_random = entries[num]
+        page = util.get_entry(page_random)
+        page_converted = markdwn.convert(page)
+
+        context = {
+            'form': Search(),
+            'page': page_converted,
+            'title': page_random
+        }
+
+        return render(request, "encyclopedia/entry.html", context)
+            
