@@ -51,4 +51,4 @@ Complete the implementation of your Wiki encyclopedia. You must fulfill the foll
 
 - By default, when substituting a value in a Django template, Django HTML-escapes the value to avoid outputting unintended HTML. If you want to allow for an HTML string to be outputted, you can do so with the `[safe]` filter (as by adding `|safe` after the variable name you’re substituting).
 ## Additional info
-This project is the problem 1 of the [Harvard](https://www.harvard.edu) [`CS50` course, Web Programming with Python and Javascript](https://online-learning.harvard.edu/course/cs50s-web-programming-python-and-javascript?delta=0).
+This project is the problem 1 of the [Harvard](https://www.harvard.edu) [`CS50` course, Web Programming with Python and Javascript](https://online-learning.harvard.edu/course/cs50s-web-programming-python-and-javascript?delta=0). 
